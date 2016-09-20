@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.mycode.content.dao.MyContentDao">
+    
+	<sql id="myContentColumns">
+		a.id AS "id",
+		a.contenttype AS "contentType",
+		a.content AS "content",
+		a.createtime AS "createTime"
+	</sql>
+	
+	<sql id="myContentJoins">
+	</sql>
+    
+	<select id="get" resultType="MyContent">
+		SELECT 
+			<include refid="myContentColumns"/>
+		FROM my_content a
+		<include refid="myContentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MyContent">
+		SELECT 
+			<include refid="myContentColumns"/>
+		FROM my_content a
+		<include refid="myContentJoins"/>
+		<where>
+			
+			<if test="contentType != null and contentType != ''">
+				AND a.contenttype = #{contentType}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MyContent">
+		SELECT 
+			<include refid="myContentColumns"/>
+		FROM my_content a
+		<include refid="myContentJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO my_content(
+			id,
+			contenttype,
+			content,
+			createtime
+		) VALUES (
+			#{id},
+			#{contentType},
+			#{content},
+			#{createTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE my_content SET 	
+			contenttype = #{contentType},
+			content = #{content},
+			createtime = #{createTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM my_content
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.finance.voucher.dao.FinanceVoucherDao">
+    
+	<sql id="financeVoucherColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.amount AS "amount",
+		a.voucher_date AS "voucherDate",
+		a.people AS "people",
+		a.purpose AS "purpose",
+		a.status AS "status",
+		a.attach AS "attach",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		c.pcode AS "project.pcode",
+		c.pname AS "project.pname",
+		b.code AS "caption.code",
+		b.name AS "caption.name"
+	</sql>
+	
+	<sql id="financeVoucherJoins">
+		LEFT JOIN report_project c ON c.pcode = a.project_id
+		LEFT JOIN finance_account_caption b ON b.code = a.caption_id
+	</sql>
+    
+	<select id="get" resultType="FinanceVoucher">
+		SELECT 
+			<include refid="financeVoucherColumns"/>
+		FROM finance_voucher a
+		<include refid="financeVoucherJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="selectCount" resultType="string">
+		SELECT 
+			sum(a.amount)
+		FROM finance_voucher a
+		<include refid="financeVoucherJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="beginVoucherDate != null and endVoucherDate != null and beginVoucherDate != '' and endVoucherDate != ''">
+				AND a.voucher_date BETWEEN #{beginVoucherDate} AND #{endVoucherDate}
+			</if>
+			<if test="people != null and people != ''">
+				AND a.people LIKE 
+					<if test="dbName == 'oracle'">'%'||#{people}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{people}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{people},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="project != null and project.pcode != null and project.pcode != ''">
+				AND a.project_id = #{project.pcode}
+			</if>
+			<if test="caption != null and caption.code != null and caption.code != ''">
+				AND (a.caption_id = #{caption.code} or b.parent_id = #{caption.code})				
+			</if>
+			<if test="caption != null and caption.dcType != null and caption.dcType != ''">
+				AND b.dc_type = #{caption.dcType}
+			</if>				
+		</where>
+
+	</select>	
+	
+	<select id="findList" resultType="FinanceVoucher">
+		SELECT 
+			<include refid="financeVoucherColumns"/>
+		FROM finance_voucher a
+		<include refid="financeVoucherJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="beginVoucherDate != null and endVoucherDate != null and beginVoucherDate != '' and endVoucherDate != ''">
+				AND a.voucher_date BETWEEN #{beginVoucherDate} AND #{endVoucherDate}
+			</if>
+			<if test="people != null and people != ''">
+				AND a.people LIKE 
+					<if test="dbName == 'oracle'">'%'||#{people}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{people}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{people},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="project != null and project.pcode != null and project.pcode != ''">
+				AND a.project_id = #{project.pcode}
+			</if>
+			<if test="caption != null and caption.code != null and caption.code != ''">
+				AND (a.caption_id = #{caption.code} or b.parent_id = #{caption.code})
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FinanceVoucher">
+		SELECT 
+			<include refid="financeVoucherColumns"/>
+		FROM finance_voucher a
+		<include refid="financeVoucherJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO finance_voucher(
+			id,
+			name,
+			amount,
+			voucher_date,
+			people,
+			purpose,
+			status,
+			project_id,
+			caption_id,
+			attach,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{amount},
+			#{voucherDate},
+			#{people},
+			#{purpose},
+			#{status},
+			#{project.pcode},
+			#{caption.code},
+			#{attach},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE finance_voucher SET 	
+			name = #{name},
+			amount = #{amount},
+			voucher_date = #{voucherDate},
+			people = #{people},
+			purpose = #{purpose},
+			status = #{status},
+			project_id = #{project.pcode},
+			caption_id = #{caption.code},
+			attach = #{attach},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE finance_voucher SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

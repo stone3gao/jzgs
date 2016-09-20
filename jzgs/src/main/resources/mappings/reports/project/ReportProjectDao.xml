@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.reports.project.dao.ReportProjectDao">
+    
+	<sql id="reportProjectColumns">
+		a.id AS "id",
+		a.pcode AS "pcode",
+		a.pname AS "pname",
+		a.paddr AS "paddr",
+		a.cost AS "cost",
+		a.people AS "people",
+		a.period AS "period",
+		a.process AS "process",
+		a.type AS "type",
+		a.leadinguserid AS "leadinguserid",
+		a.status AS "status",
+		a.profit AS "profit",
+		a.attach AS "attach",
+		a.startdate AS "startdate",
+		a.enddate AS "enddate",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="reportProjectJoins">
+	</sql>
+	
+	<select id="getProjectByPcode" resultType="ReportProject">
+		SELECT 
+			<include refid="reportProjectColumns"/>
+		FROM report_project a
+		<include refid="reportProjectJoins"/>
+		WHERE a.pcode = #{pcode}
+	</select>	
+    
+	<select id="get" resultType="ReportProject">
+		SELECT 
+			<include refid="reportProjectColumns"/>
+		FROM report_project a
+		<include refid="reportProjectJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ReportProject">
+		SELECT 
+			<include refid="reportProjectColumns"/>
+		FROM report_project a
+		<include refid="reportProjectJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="pcode != null and pcode != ''">
+				AND a.pcode = #{pcode}
+			</if>
+			<if test="pname != null and pname != ''">
+				AND a.pname = #{pname}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="startdate != null and startdate != ''">
+				AND a.startdate = #{startdate}
+			</if>
+			<if test="enddate != null and enddate != ''">
+				AND a.enddate = #{enddate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ReportProject">
+		SELECT 
+			<include refid="reportProjectColumns"/>
+		FROM report_project a
+		<include refid="reportProjectJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO report_project(
+			id,
+			pcode,
+			pname,
+			paddr,
+			cost,
+			people,
+			period,
+			process,
+			type,
+			leadinguserid,
+			status,
+			profit,
+			attach,
+			startdate,
+			enddate,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{pcode},
+			#{pname},
+			#{paddr},
+			#{cost},
+			#{people},
+			#{period},
+			#{process},
+			#{type},
+			#{leadinguserid},
+			#{status},
+			#{profit},
+			#{attach},
+			#{startdate},
+			#{enddate},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE report_project SET 	
+			pcode = #{pcode},
+			pname = #{pname},
+			paddr = #{paddr},
+			cost = #{cost},
+			people = #{people},
+			period = #{period},
+			process = #{process},
+			type = #{type},
+			leadinguserid = #{leadinguserid},
+			status = #{status},
+			profit = #{profit},
+			attach = #{attach},
+			startdate = #{startdate},
+			enddate = #{enddate},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE report_project SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

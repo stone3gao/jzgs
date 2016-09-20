@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.reports.steels.dao.ReportSteelsDao">
+    
+	<sql id="reportSteelsColumns">
+		a.id AS "id",
+		a.type AS "type",
+		a.model AS "model",
+		a.standard AS "standard",
+		a.weight AS "weight",
+		a.number AS "number",
+		a.attach AS "attach",		
+		a.useredNumber AS "useredNumber",
+		a.unUseredNumber AS "unUseredNumber",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		c.pcode AS "project.pcode",
+		c.pname AS "project.pname",
+		b.name AS "createBy.name",
+		d.name AS "updateBy.name"
+	</sql>
+	
+	<sql id="reportSteelsJoins">
+		LEFT JOIN report_project c ON c.pcode = a.projectid
+		LEFT JOIN sys_user b ON b.id = a.create_by
+		LEFT JOIN sys_user d ON d.id = a.update_by		
+	</sql>
+    
+	<select id="get" resultType="ReportSteels">
+		SELECT 
+			<include refid="reportSteelsColumns"/>
+		FROM report_steels a
+		<include refid="reportSteelsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ReportSteels">
+		SELECT 
+			<include refid="reportSteelsColumns"/>
+		FROM report_steels a
+		<include refid="reportSteelsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="project != null and project.pcode != null and project.pcode != ''">
+				AND a.projectid = #{project.pcode}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="model != null and model != ''">
+				AND a.model = #{model}
+			</if>
+			<if test="standard != null and standard != ''">
+				AND a.standard = #{standard}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ReportSteels">
+		SELECT 
+			<include refid="reportSteelsColumns"/>
+		FROM report_steels a
+		<include refid="reportSteelsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO report_steels(
+			id,
+			projectid,
+			type,
+			model,
+			standard,
+			weight,
+			number,
+			useredNumber,
+			unUseredNumber,
+			attach,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{project.pcode},
+			#{type},
+			#{model},
+			#{standard},
+			#{weight},
+			#{number},
+			#{useredNumber},
+			#{unUseredNumber},
+			#{attach},			
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE report_steels SET 	
+			projectid = #{project.pcode},
+			type = #{type},
+			model = #{model},
+			standard = #{standard},
+			weight = #{weight},
+			number = #{number},
+			useredNumber = #{useredNumber},
+			unUseredNumber  = #{unUseredNumber},
+			attach = #{attach},			
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE report_steels SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

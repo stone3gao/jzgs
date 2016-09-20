@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.mycode.pic.dao.MyPicinfoDao">
+    
+	<sql id="myPicinfoColumns">
+		a.id AS "id",
+		a.actiontype AS "actionType",
+		a.picurl AS "picUrl",
+		a.status AS "status",
+		a.ramark AS "ramark",
+		a.createtime AS "createTime"
+	</sql>
+	
+	<sql id="myPicinfoJoins">
+	</sql>
+    
+	<select id="get" resultType="MyPicinfo">
+		SELECT 
+			<include refid="myPicinfoColumns"/>
+		FROM my_picinfo a
+		<include refid="myPicinfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MyPicinfo">
+		SELECT 
+			<include refid="myPicinfoColumns"/>
+		FROM my_picinfo a
+		<include refid="myPicinfoJoins"/>
+		<where>
+			
+			<if test="actionType != null and actionType != ''">
+				AND a.actiontype = #{actionType}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND a.createtime = #{createTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MyPicinfo">
+		SELECT 
+			<include refid="myPicinfoColumns"/>
+		FROM my_picinfo a
+		<include refid="myPicinfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO my_picinfo(
+			id,
+			actiontype,
+			picurl,
+			status,
+			ramark,
+			createtime
+		) VALUES (
+			#{id},
+			#{actionType},
+			#{picUrl},
+			#{status},
+			#{ramark},
+			#{createTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE my_picinfo SET 	
+			actiontype = #{actionType},
+			picurl = #{picUrl},
+			status = #{status},
+			ramark = #{ramark},
+			createtime = #{createTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM my_picinfo
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
