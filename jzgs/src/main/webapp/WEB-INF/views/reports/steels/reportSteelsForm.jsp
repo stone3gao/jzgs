@@ -93,14 +93,15 @@
 		<div class="control-group">
 			<label class="control-label">数量：</label>
 			<div class="controls">
-				<form:input path="number" htmlEscape="false" maxlength="10" class="input-xlarge digits"/>
+				<form:input path="number" htmlEscape="false" maxlength="10" class="input-xlarge required digits"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">已消耗数量：</label>
 			<div class="controls">
-				<form:input path="useredNumber" htmlEscape="false" maxlength="10" class="input-xlarge digits"/>
+				<form:input path="useredNumber" htmlEscape="false" maxlength="10" class="input-xlarge required digits"/>
+				<span class="help-inline"><font color="red">*</font> </span>				
 			</div>
 		</div>
 		<div class="control-group">
