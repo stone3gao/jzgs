@@ -44,6 +44,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
         super(id);
     }
 
+    @ExcelField(title = "所属会计凭证", align = 2, sort = 70)
     public FinanceAccountCaption getCaption() {
         return caption;
     }
@@ -53,7 +54,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
     }
 
     @JsonIgnore
-    @ExcelField(title = "归属项目", align = 2, sort = 10)
+    @ExcelField(title = "归属项目", align = 2, sort = 60)
     public ReportProject getProject() {
         return project;
     }
@@ -63,6 +64,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
     }
 
     @Length(min = 1, max = 100, message = "名称长度必须介于 1 和 100 之间")
+    @ExcelField(title = "记账凭证名称", align = 2, sort = 10)
     public String getName() {
         return name;
     }
@@ -71,6 +73,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
         this.name = name;
     }
 
+    @ExcelField(title = "金额（元）", align = 2, sort = 30)
     public String getAmount() {
         return amount;
     }
@@ -81,6 +84,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "时间不能为空")
+    @ExcelField(title = "发生时间", align = 2, sort = 40)
     public Date getVoucherDate() {
         return voucherDate;
     }
@@ -90,6 +94,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
     }
 
     @Length(min = 1, max = 100, message = "人员长度必须介于 1 和 100 之间")
+    @ExcelField(title = "提起人", align = 2, sort = 20)
     public String getPeople() {
         return people;
     }
@@ -99,6 +104,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
     }
 
     @Length(min = 1, max = 400, message = "用途描述长度必须介于 1 和 400 之间")
+    @ExcelField(title = "用途描述", align = 2, sort = 50)
     public String getPurpose() {
         return purpose;
     }
@@ -108,6 +114,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
     }
 
     @Length(min = 1, max = 1, message = "状态长度必须介于 1 和 1 之间")
+    @ExcelField(title = "凭证状态", align = 2, sort = 60, dictType = "finance_voucher_status")
     public String getStatus() {
         return status;
     }
