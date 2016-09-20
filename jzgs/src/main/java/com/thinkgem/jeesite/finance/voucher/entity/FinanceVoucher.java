@@ -44,7 +44,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
         super(id);
     }
 
-    @ExcelField(title = "所属会计凭证", align = 2, sort = 70)
+    @ExcelField(title = "所属会计凭证", align = 2, sort = 80)
     public FinanceAccountCaption getCaption() {
         return caption;
     }
@@ -54,7 +54,7 @@ public class FinanceVoucher extends DataEntity<FinanceVoucher> {
     }
 
     @JsonIgnore
-    @ExcelField(title = "归属项目", align = 2, sort = 60)
+    @ExcelField(title = "归属项目", align = 2, sort = 70)
     public ReportProject getProject() {
         return project;
     }

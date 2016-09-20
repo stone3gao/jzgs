@@ -11,6 +11,7 @@
 					if (v == "ok") {
 						$("#searchForm").attr("action", "${ctx}/voucher/financeVoucher/export");
 						$("#searchForm").submit();
+						$("#searchForm").attr("action", "${ctx}/voucher/financeVoucher/");
 					}
 				}, {
 					buttonsFocus : 1

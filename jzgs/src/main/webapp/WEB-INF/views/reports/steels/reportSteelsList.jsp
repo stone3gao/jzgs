@@ -11,6 +11,7 @@
 					if (v == "ok") {
 						$("#searchForm").attr("action", "${ctx}/steels/reportSteels/export");
 						$("#searchForm").submit();
+						$("#searchForm").attr("action", "${ctx}/steels/reportSteels/");
 					}
 				}, {
 					buttonsFocus : 1
