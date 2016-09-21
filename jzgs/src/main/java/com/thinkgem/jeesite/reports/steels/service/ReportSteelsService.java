@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.reports.steels.entity.ReportSteels;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.reports.steels.dao.ReportSteelsDao;
+import com.thinkgem.jeesite.reports.steels.entity.ReportSteels;
 
 /**
  * 报表钢铁Service
@@ -22,26 +23,27 @@ import com.thinkgem.jeesite.reports.steels.dao.ReportSteelsDao;
 @Transactional(readOnly = true)
 public class ReportSteelsService extends CrudService<ReportSteelsDao, ReportSteels> {
 
-	public ReportSteels get(String id) {
-		return super.get(id);
-	}
-	
-	public List<ReportSteels> findList(ReportSteels reportSteels) {
-		return super.findList(reportSteels);
-	}
-	
-	public Page<ReportSteels> findPage(Page<ReportSteels> page, ReportSteels reportSteels) {
-		return super.findPage(page, reportSteels);
-	}
-	
-	@Transactional(readOnly = false)
-	public void save(ReportSteels reportSteels) {
-		super.save(reportSteels);
-	}
-	
-	@Transactional(readOnly = false)
-	public void delete(ReportSteels reportSteels) {
-		super.delete(reportSteels);
-	}
-	
+    public ReportSteels get(String id) {
+        return super.get(id);
+    }
+
+    public List<ReportSteels> findList(ReportSteels reportSteels) {
+        return super.findList(reportSteels);
+    }
+
+    public Page<ReportSteels> findPage(Page<ReportSteels> page, ReportSteels reportSteels) {
+        reportSteels.getSqlMap().put("dsf", dataScopeFilter(UserUtils.getUser(), "o", "b"));
+        return super.findPage(page, reportSteels);
+    }
+
+    @Transactional(readOnly = false)
+    public void save(ReportSteels reportSteels) {
+        super.save(reportSteels);
+    }
+
+    @Transactional(readOnly = false)
+    public void delete(ReportSteels reportSteels) {
+        super.delete(reportSteels);
+    }
+
 }

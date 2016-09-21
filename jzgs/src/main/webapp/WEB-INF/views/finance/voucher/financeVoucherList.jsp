@@ -36,7 +36,7 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>名称：</label>
+			<li><label>简称：</label>
 				<form:input path="name" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
 			<li><label>时间：</label>
@@ -47,7 +47,7 @@
 					value="<fmt:formatDate value="${financeVoucher.endVoucherDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</li>
-			<li><label>人员：</label>
+			<li><label>关系人：</label>
 				<form:input path="people" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
 			<li><label>状态：</label>
@@ -83,17 +83,15 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>名称</th>
-				<th>金额</th>
-				<th>时间</th>
-				<th>人员</th>
-				<th>用途描述</th>
-				<th>状态</th>
+				<th>凭证简称</th>
+				<th>关系人</th>
+				<th>用途描述</th>				
+				<th>发生金额</th>
+				<th>发生时间</th>
+				<th>归属会计科目</th>				
 				<th>归属项目</th>
-				<th>会计科目</th>
+				<th>凭证状态</th>
 				<th>创建时间</th>
-				<th>更新时间</th>
-				<th>备注信息</th>
 				<shiro:hasPermission name="voucher:financeVoucher:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -104,34 +102,28 @@
 					${financeVoucher.name}
 				</a></td>
 				<td>
+					${financeVoucher.people}
+				</td>
+				<td>
+					${financeVoucher.purpose}
+				</td>				
+				<td>
 					${financeVoucher.amount}(元)
 				</td>
 				<td>
 					<fmt:formatDate value="${financeVoucher.voucherDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${financeVoucher.people}
-				</td>
-				<td>
-					${financeVoucher.purpose}
-				</td>
-				<td>
-					${fns:getDictLabel(financeVoucher.status, 'finance_voucher_status', '')}
-				</td>
+					${financeVoucher.caption.name}
+				</td>				
 				<td>
 					${financeVoucher.project.pname}
 				</td>
 				<td>
-					${financeVoucher.caption.name}
-				</td>
+					${fns:getDictLabel(financeVoucher.status, 'finance_voucher_status', '')}
+				</td>				
 				<td>
 					<fmt:formatDate value="${financeVoucher.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					<fmt:formatDate value="${financeVoucher.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${financeVoucher.remarks}
 				</td>
 				<shiro:hasPermission name="voucher:financeVoucher:edit"><td>
     				<a href="${ctx}/voucher/financeVoucher/form?id=${financeVoucher.id}">修改</a>

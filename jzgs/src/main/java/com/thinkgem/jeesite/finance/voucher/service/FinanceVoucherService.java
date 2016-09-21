@@ -12,6 +12,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.finance.voucher.dao.FinanceVoucherDao;
 import com.thinkgem.jeesite.finance.voucher.entity.FinanceVoucher;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 记账凭证管理Service
@@ -31,10 +32,12 @@ public class FinanceVoucherService extends CrudService<FinanceVoucherDao, Financ
     }
 
     public String selectCount(FinanceVoucher financeVoucher) {
+        financeVoucher.getSqlMap().put("dsf", dataScopeFilter(UserUtils.getUser(), "o", "p"));
         return dao.selectCount(financeVoucher);
     }
 
     public Page<FinanceVoucher> findPage(Page<FinanceVoucher> page, FinanceVoucher financeVoucher) {
+        financeVoucher.getSqlMap().put("dsf", dataScopeFilter(UserUtils.getUser(), "o", "p"));
         return super.findPage(page, financeVoucher);
     }
 

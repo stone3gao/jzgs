@@ -69,7 +69,6 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>编号</th>
 				<th>归属项目</th>
 				<th>类型</th>
 				<th>型号</th>
@@ -90,11 +89,8 @@
 		<c:forEach items="${page.list}" var="reportSteels">
 			<tr>
 				<td><a href="${ctx}/steels/reportSteels/form?id=${reportSteels.id}">
-					${reportSteels.id}
-				</a></td>
-				<td>
 					${reportSteels.project.pname}
-				</td>
+				</a></td>
 				<td>
 					${fns:getDictLabel(reportSteels.type, 'report_type_steels', '')}
 				</td>

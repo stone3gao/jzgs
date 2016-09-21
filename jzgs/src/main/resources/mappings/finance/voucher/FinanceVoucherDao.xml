@@ -26,6 +26,8 @@
 	<sql id="financeVoucherJoins">
 		LEFT JOIN report_project c ON c.pcode = a.project_id
 		LEFT JOIN finance_account_caption b ON b.code = a.caption_id
+		LEFT JOIN sys_user p ON p.id = a.create_by
+		LEFT JOIN sys_office o ON o.id = p.office_id
 	</sql>
     
 	<select id="get" resultType="FinanceVoucher">
@@ -69,9 +71,10 @@
 			</if>
 			<if test="caption != null and caption.dcType != null and caption.dcType != ''">
 				AND b.dc_type = #{caption.dcType}
-			</if>				
+			</if>
 		</where>
-
+			<!-- 数据范围过滤 -->
+			${sqlMap.dsf}	
 	</select>	
 	
 	<select id="findList" resultType="FinanceVoucher">
@@ -106,12 +109,14 @@
 				AND (a.caption_id = #{caption.code} or b.parent_id = #{caption.code})
 			</if>
 		</where>
+		<!-- 数据范围过滤 -->
+		${sqlMap.dsf}		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>

@@ -27,7 +27,8 @@
 	<sql id="reportSteelsJoins">
 		LEFT JOIN report_project c ON c.pcode = a.projectid
 		LEFT JOIN sys_user b ON b.id = a.create_by
-		LEFT JOIN sys_user d ON d.id = a.update_by		
+		LEFT JOIN sys_user d ON d.id = a.update_by
+		LEFT JOIN sys_office o ON o.id = b.office_id				
 	</sql>
     
 	<select id="get" resultType="ReportSteels">
@@ -58,6 +59,8 @@
 				AND a.standard = #{standard}
 			</if>
 		</where>
+		<!-- 数据范围过滤 -->
+		${sqlMap.dsf}			
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}

@@ -142,6 +142,7 @@ public class ReportSteelsController extends BaseController {
                             info.setStandard(cellList.get(2));
                             info.setType(cellList.get(3));
                             info.setNumber(Integer.parseInt(cellList.get(4)));
+                            info.setUseredNumber(Integer.parseInt(cellList.get(4)));
                             info.setWeight(cellList.get(5));
                             info.setRemarks(cellList.get(6));
                             reportSteelsService.save(info);

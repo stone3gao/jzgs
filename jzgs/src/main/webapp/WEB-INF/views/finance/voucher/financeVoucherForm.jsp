@@ -34,21 +34,21 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">名称：</label>
+			<label class="control-label">凭证简称：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">人员：</label>
+			<label class="control-label">关系人：</label>
 			<div class="controls">
 				<form:input path="people" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">金额(单位元)：</label>
+			<label class="control-label">发生金额(单位元)：</label>
 			<div class="controls">
 				<form:input path="amount" htmlEscape="false" class="input-xlarge number"/>
 				<span class="help-inline"><font color="red">*</font> </span>
@@ -62,7 +62,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">时间：</label>
+			<label class="control-label">发生时间：</label>
 			<div class="controls">
 				<input name="voucherDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate required"
 					value="<fmt:formatDate value="${financeVoucher.voucherDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
@@ -71,7 +71,7 @@
 			</div>
 		</div>		
 		<div class="control-group">
-			<label class="control-label">状态：</label>
+			<label class="control-label">凭证状态：</label>
 			<div class="controls">
 				<form:select path="status" class="input-medium required">
 					<form:option value="" label=""/>
@@ -90,7 +90,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">会计科目：</label>
+			<label class="control-label">归属会计科目：</label>
 			<div class="controls">
 				<sys:treeselect2 id="caption" name="caption.code" value="${financeVoucher.caption.code}" notAllowSelectRoot="true" labelName="caption.name" labelValue="${financeVoucher.caption.name}"
 					title="会计科目" url="/caption/financeAccountCaption/treeData" cssClass="input-medium required"/>		
