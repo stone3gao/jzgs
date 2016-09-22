@@ -23,10 +23,14 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		b.name AS "createBy.name",
+		d.name AS "updateBy.name"		
 	</sql>
 	
 	<sql id="reportProjectJoins">
+		LEFT JOIN sys_user b ON b.id = a.create_by
+		LEFT JOIN sys_user d ON d.id = a.update_by
 	</sql>
 	
 	<select id="getProjectByPcode" resultType="ReportProject">

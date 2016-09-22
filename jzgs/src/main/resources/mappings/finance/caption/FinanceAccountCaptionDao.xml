@@ -16,10 +16,12 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
+		p.name AS "createBy.name",
 		a.del_flag AS "delFlag"
 	</sql>
 	
 	<sql id="financeAccountCaptionJoins">
+		LEFT JOIN sys_user p ON p.id = a.create_by
 	</sql>
 	
 	<select id="getCaptionByCode" resultType="FinanceAccountCaption">

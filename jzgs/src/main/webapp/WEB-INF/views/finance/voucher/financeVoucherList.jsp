@@ -91,6 +91,7 @@
 				<th>归属会计科目</th>				
 				<th>归属项目</th>
 				<th>凭证状态</th>
+				<th>创建者</th>				
 				<th>创建时间</th>
 				<shiro:hasPermission name="voucher:financeVoucher:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -111,7 +112,7 @@
 					${financeVoucher.amount}(元)
 				</td>
 				<td>
-					<fmt:formatDate value="${financeVoucher.voucherDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${financeVoucher.voucherDate}" pattern="yyyy-MM-dd"/>
 				</td>
 				<td>
 					${financeVoucher.caption.name}
@@ -121,9 +122,12 @@
 				</td>
 				<td>
 					${fns:getDictLabel(financeVoucher.status, 'finance_voucher_status', '')}
-				</td>				
+				</td>
 				<td>
-					<fmt:formatDate value="${financeVoucher.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${financeVoucher.createBy.name}
+				</td>								
+				<td>
+					<fmt:formatDate value="${financeVoucher.createDate}" pattern="yyyy-MM-dd"/>
 				</td>
 				<shiro:hasPermission name="voucher:financeVoucher:edit"><td>
     				<a href="${ctx}/voucher/financeVoucher/form?id=${financeVoucher.id}">修改</a>

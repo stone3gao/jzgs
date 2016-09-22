@@ -117,6 +117,34 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
+		<c:if test="${reportSteels != null && not empty reportSteels.createBy.name}">
+			<div class="control-group">
+				<label class="control-label">创建人:</label>
+				<div class="controls">
+					<label class="lbl">${reportSteels.createBy.name}</label>
+				</div>
+			</div>			
+			<div class="control-group">
+				<label class="control-label">创建时间:</label>
+				<div class="controls">
+					<label class="lbl"><fmt:formatDate value="${reportSteels.createDate}" type="both" dateStyle="full"/></label>
+				</div>
+			</div>
+			<c:if test="${not empty reportSteels.updateBy.name}">
+				<div class="control-group">
+					<label class="control-label">更新人员:</label>
+					<div class="controls">
+						<label class="lbl"> ${reportSteels.updateBy.name}</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">更新时间:</label>
+					<div class="controls">
+						<label class="lbl"><fmt:formatDate value="${reportSteels.updateDate}" type="both" dateStyle="full"/></label>
+					</div>
+				</div>				
+			</c:if>	
+		</c:if>			
 		<div class="form-actions">
 			<shiro:hasPermission name="steels:reportSteels:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
