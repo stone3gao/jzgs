@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -31,6 +32,8 @@ import com.thinkgem.jeesite.reports.project.service.ReportProjectService;
 import com.thinkgem.jeesite.reports.steels.entity.ReportSteels;
 import com.thinkgem.jeesite.reports.steels.service.ReportSteelsService;
 import com.thinkgem.jeesite.reports.util.ImportExecl;
+import com.thinkgem.jeesite.reports.vend.entity.ReportVend;
+import com.thinkgem.jeesite.reports.vend.service.ReportVendService;
 
 /**
  * 报表钢铁Controller
@@ -46,6 +49,9 @@ public class ReportSteelsController extends BaseController {
 
     @Autowired
     private ReportProjectService reportProjectService;
+
+    @Autowired
+    private ReportVendService reportVendService;
 
     @Resource
     ImportExecl execl;
@@ -70,6 +76,10 @@ public class ReportSteelsController extends BaseController {
         model.addAttribute("page", page);
         List<ReportProject> pList = reportProjectService.findList(new ReportProject());
         model.addAttribute("projectList", pList);
+
+        List<ReportVend> vList = reportVendService.findList(new ReportVend());
+        model.addAttribute("vendList", vList);
+
         return "reports/steels/reportSteelsList";
     }
 
@@ -79,6 +89,10 @@ public class ReportSteelsController extends BaseController {
         model.addAttribute("reportSteels", reportSteels);
         List<ReportProject> pList = reportProjectService.findList(new ReportProject());
         model.addAttribute("projectList", pList);
+
+        List<ReportVend> vList = reportVendService.findList(new ReportVend());
+        model.addAttribute("vendList", vList);
+
         return "reports/steels/reportSteelsForm";
     }
 
@@ -182,7 +196,14 @@ public class ReportSteelsController extends BaseController {
         if (!beanValidator(model, reportSteels)) {
             return form(reportSteels, model);
         }
+        if (reportSteels.getAmount() != null && reportSteels.getAmount().equals("")) {
+            reportSteels.setAmount(null);
+        }
+        if (StringUtils.isEmpty(reportSteels.getCode())) {
+            reportSteels.setCode(IdGen.randomBase62(6));
+        }
         reportSteelsService.save(reportSteels);
+
         addMessage(redirectAttributes, "保存钢材成功");
         return "redirect:" + Global.getAdminPath() + "/steels/reportSteels/?repage";
     }

@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.reports.project.entity.ReportProject;
+import com.thinkgem.jeesite.reports.vend.entity.ReportVend;
 
 /**
  * 报表钢铁Entity
@@ -23,6 +24,7 @@ import com.thinkgem.jeesite.reports.project.entity.ReportProject;
 public class ReportSteels extends DataEntity<ReportSteels> {
 
     private static final long serialVersionUID = 1L;
+    private String code;// 编号
     private ReportProject project; // 归属项目
     private String type; // 类型
     private String model; // 型号
@@ -32,6 +34,8 @@ public class ReportSteels extends DataEntity<ReportSteels> {
     private Integer useredNumber; // 已使用数量
     private Integer unUseredNumber; // 剩余数量
     private String attach;
+    private String amount; // 金额
+    private ReportVend vend; // 供应商
 
     public ReportSteels() {
         super();
@@ -39,6 +43,34 @@ public class ReportSteels extends DataEntity<ReportSteels> {
 
     public ReportSteels(String id) {
         super(id);
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @ExcelField(title = "总价格（元）", align = 2, sort = 30)
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    @JsonIgnore
+    @NotNull(message = "供应商不能为空")
+    @ExcelField(title = "供应商", align = 2, sort = 10)
+    public ReportVend getVend() {
+        return vend;
+    }
+
+    public void setVend(ReportVend vend) {
+        this.vend = vend;
     }
 
     @JsonIgnore

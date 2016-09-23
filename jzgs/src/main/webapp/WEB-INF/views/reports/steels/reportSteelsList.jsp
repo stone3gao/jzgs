@@ -42,6 +42,12 @@
 					<form:options items="${projectList}" itemLabel="pname" itemValue="pcode" htmlEscape="false"/>
 				</form:select>				
 			</li>
+			<li><label>供应商：</label>
+				<form:select path="vend.code" class="input-medium ">
+					<form:option value="" label=""/>
+					<form:options items="${vendList}" itemLabel="name" itemValue="code" htmlEscape="false"/>
+				</form:select>				
+			</li>			
 			<li><label>类型：</label>
 				<form:select path="type" class="input-medium">
 					<form:option value="" label=""/>
@@ -69,19 +75,18 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>编号</th>
 				<th>归属项目</th>
+				<th>供应商</th>					
 				<th>类型</th>
 				<th>型号</th>
 				<th>规格</th>
-				<th>理论重量</th>
-				<th>数量</th>
+				<th>总数量</th>
 				<th>已消耗数量</th>
 				<th>剩余数量</th>
+				<th>总价格</th>
 				<th>创建者</th>
 				<th>创建时间</th>
-				<th>更新者</th>
-				<th>更新时间</th>
-				<th>备注信息</th>
 				<shiro:hasPermission name="steels:reportSteels:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -89,8 +94,14 @@
 		<c:forEach items="${page.list}" var="reportSteels">
 			<tr>
 				<td><a href="${ctx}/steels/reportSteels/form?id=${reportSteels.id}">
-					${reportSteels.project.pname}
+					${reportSteels.code}
 				</a></td>
+				<td>
+					${reportSteels.project.pname}
+				</td>				
+				<td>
+					${reportSteels.vend.name}
+				</td>				
 				<td>
 					${fns:getDictLabel(reportSteels.type, 'report_type_steels', '')}
 				</td>
@@ -101,9 +112,6 @@
 					${fns:getDictLabel(reportSteels.standard, 'report_standard_steels', '')}
 				</td>
 				<td>
-					${reportSteels.weight}
-				</td>
-				<td>
 					${reportSteels.number}
 				</td>
 				<td>
@@ -111,21 +119,15 @@
 				</td>
 				<td>
 					<span style="color: red;">${reportSteels.unUseredNumber}</span>
-				</td>								
+				</td>
+				<td>
+					${reportSteels.amount}
+				</td>
 				<td>
 					${reportSteels.createBy.name}
 				</td>
 				<td>
-					<fmt:formatDate value="${reportSteels.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${reportSteels.updateBy.name}
-				</td>
-				<td>
-					<fmt:formatDate value="${reportSteels.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${reportSteels.remarks}
+					<fmt:formatDate value="${reportSteels.createDate}" pattern="yyyy-MM-dd"/>
 				</td>
 				<shiro:hasPermission name="steels:reportSteels:edit"><td>
     				<a href="${ctx}/steels/reportSteels/form?id=${reportSteels.id}">修改</a>

@@ -7,7 +7,7 @@
 	<script type="text/javascript">
 		jQuery.validator.addMethod("checkValue", function(value,element) {
 			var number = $("#number").val();
-	      	return this.optional(element) || eval(value) < eval(number);   
+	      	return this.optional(element) || eval(value) <= eval(number);   
 	    }, $.validator.format(" * 消耗数量必须小于总数量"));
 		$(document).ready(function() {
 			//$("#name").focus();
@@ -55,6 +55,15 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">供应商：</label>
+			<div class="controls">
+				<form:select path="vend.code" class="input-xlarge">
+					<form:option value="" label=""/>
+					<form:options items="${vendList}" itemLabel="name" itemValue="code" htmlEscape="false"/>
+				</form:select>			
+			</div>
+		</div>		
+		<div class="control-group">
 			<label class="control-label">类型：</label>
 			<div class="controls">
 				<form:select path="type" class="input-xlarge required">
@@ -85,13 +94,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">理论重量：</label>
-			<div class="controls">
-				<form:input path="weight" htmlEscape="false" maxlength="10" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">数量：</label>
+			<label class="control-label">总数量：</label>
 			<div class="controls">
 				<form:input path="number" htmlEscape="false" maxlength="10" class="input-xlarge required digits"/>
 				<span class="help-inline"><font color="red">*</font> </span>
@@ -103,7 +106,13 @@
 				<form:input path="useredNumber" htmlEscape="false" maxlength="10" class="input-xlarge required digits"/>
 				<span class="help-inline"><font color="red">*</font> </span>				
 			</div>
-		</div>
+		</div>		
+		<div class="control-group">
+			<label class="control-label">总价格(单位元)：</label>
+			<div class="controls">
+				<form:input path="amount" htmlEscape="false" class="input-xlarge number"/>
+			</div>
+		</div>		
 		<div class="control-group">
 			<label class="control-label">单据附件：</label>
 			<div class="controls">

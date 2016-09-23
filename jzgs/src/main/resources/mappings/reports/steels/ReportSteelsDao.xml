@@ -4,12 +4,14 @@
     
 	<sql id="reportSteelsColumns">
 		a.id AS "id",
+		a.code AS "code",
 		a.type AS "type",
 		a.model AS "model",
 		a.standard AS "standard",
 		a.weight AS "weight",
 		a.number AS "number",
-		a.attach AS "attach",		
+		a.attach AS "attach",
+		a.amount AS "amount",
 		a.useredNumber AS "useredNumber",
 		a.unUseredNumber AS "unUseredNumber",
 		a.create_by AS "createBy.id",
@@ -21,14 +23,17 @@
 		c.pcode AS "project.pcode",
 		c.pname AS "project.pname",
 		b.name AS "createBy.name",
-		d.name AS "updateBy.name"
+		d.name AS "updateBy.name",
+		p.code As "vend.code",
+		p.name AS "vend.name"
 	</sql>
 	
 	<sql id="reportSteelsJoins">
 		LEFT JOIN report_project c ON c.pcode = a.projectid
 		LEFT JOIN sys_user b ON b.id = a.create_by
 		LEFT JOIN sys_user d ON d.id = a.update_by
-		LEFT JOIN sys_office o ON o.id = b.office_id				
+		LEFT JOIN sys_office o ON o.id = b.office_id	
+		LEFT JOIN report_vend p ON p.code = a.vendCode				
 	</sql>
     
 	<select id="get" resultType="ReportSteels">
@@ -49,6 +54,9 @@
 			<if test="project != null and project.pcode != null and project.pcode != ''">
 				AND a.projectid = #{project.pcode}
 			</if>
+			<if test="vend != null and vend.code != null and vend.code != ''">
+				AND a.vendCode = #{vend.code}
+			</if>			
 			<if test="type != null and type != ''">
 				AND a.type = #{type}
 			</if>
@@ -84,7 +92,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -92,6 +100,7 @@
 	<insert id="insert">
 		INSERT INTO report_steels(
 			id,
+			code,
 			projectid,
 			type,
 			model,
@@ -100,6 +109,8 @@
 			number,
 			useredNumber,
 			unUseredNumber,
+			amount,
+			vendCode,
 			attach,
 			create_by,
 			create_date,
@@ -109,6 +120,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{code},
 			#{project.pcode},
 			#{type},
 			#{model},
@@ -117,6 +129,8 @@
 			#{number},
 			#{useredNumber},
 			#{unUseredNumber},
+			#{amount},
+			#{vend.code},
 			#{attach},			
 			#{createBy.id},
 			#{createDate},
@@ -137,6 +151,8 @@
 			number = #{number},
 			useredNumber = #{useredNumber},
 			unUseredNumber  = #{unUseredNumber},
+			amount = #{amount},
+			vendCode = #{vend.code},			
 			attach = #{attach},			
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
